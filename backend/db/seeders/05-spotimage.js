@@ -12,27 +12,27 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
-        url: "https://spotImage1",
+        url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/bikini-bottom-spongebob-squarepants-jorge-terrones.jpg",
         preview: true
       },
       {
         spotId: 2,
-        url: "https://spotImage2",
+        url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/bikini-bottom-spongebob-squarepants-jorge-terrones.jpg",
         preview: true
       },
       {
         spotId: 3,
-        url: "https://spotImage3",
+        url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/bikini-bottom-spongebob-squarepants-jorge-terrones.jpg",
         preview: true
       },
       {
         spotId: 4,
-        url: "https://spotImage4",
+        url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/bikini-bottom-spongebob-squarepants-jorge-terrones.jpg",
         preview: true
       },
       {
         spotId: 5,
-        url: "https://spotImage5",
+        url: "https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/bikini-bottom-spongebob-squarepants-jorge-terrones.jpg",
         preview: true
       },
 

@@ -7,10 +7,10 @@ const GET_ALL_SPOTS = "spots/getAllSpots";
 
 
 // ------- Action Creators -------
-const getAllSpots = (spots) => {
+const getAllSpotsAction = (data) => {
     return {
         type: GET_ALL_SPOTS,
-        payload: spots
+        payload: data
     }
 };
 
@@ -18,10 +18,10 @@ const getAllSpots = (spots) => {
 // ------- Thunks -------
 export const getAllSpotsThunk = () => async (dispatch) => {
     try {
-        const res = await csrfFetch("/api/spots");
+        const res = await csrfFetch("/api/spots/");
         if (res.ok) {
             const data = await res.json();
-            dispatch(getAllSpots(data.Spots));
+            dispatch(getAllSpotsAction(data));
             throw res;
         }
     } catch (error) {
@@ -30,45 +30,30 @@ export const getAllSpotsThunk = () => async (dispatch) => {
 };
 
 
-// ------- Reducer -------
-const initialState = { Spots: [] };
+// ------- Normalizing State -------
+const initialState = {
+    allSpots: [],
+    byId: {}
+};
 
-const spotReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case GET_ALL_SPOTS:
-            return { ...state, Spots: action.payload };
+// ------- Reducer -------
+const spotsReducer = (state = initialState, action) => {
+    let newState;
+    switch(action.type){
+        case GET_ALL_SPOTS: 
+            const spotsArr = action.payload.Spots;
+            newState = {...state}
+            newState.allSpots = spotsArr;
+            let newByIdGetAllSpots = {};
+            for(let spot of spotsArr){
+                newByIdGetAllSpots[spot.id] = spot
+            }
+            newState.byId = newByIdGetAllSpots;
+
+            return newState;
         default:
             return state;
     }
-};
+}
 
-export default spotReducer;
-
-// let initialState = {
-//     byId: {},
-//     allSpots: []
-// };
-
-
-// function spotsReducer (state = initialState, action) {
-//     let newState = {};
-
-//     switch (action.type) {
-//         case "GET_ALL_SPOTS":
-//             newState = { ...state, allSpots: action.payload };
-
-//             newState.allSpots = action.payload;
-//             console.log(action.payload);
-
-//             for (let spot of action.payload) {
-//                 newState.byId[spot.id] = spot;
-//             }
-//         //create a new object in memory and spread state
-
-//             return newState;
-//         default:
-//             return state;
-//     }
-// }
-
-// export default spotsReducer;
+export default spotsReducer;

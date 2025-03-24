@@ -9,9 +9,7 @@ import { useNavigate } from 'react-router-dom'
 const LandingPage = () => {
 
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
-
 
     const spots = useSelector((state) => state.spots.allSpots);
     const [isLoaded, setisLoaded] = useState(false);
@@ -19,18 +17,15 @@ const LandingPage = () => {
     useEffect(() => {
 
         const getSpots = async () => {
-
             await dispatch(getAllSpotsThunk());
             setisLoaded(true);
         }
-
 
         if (!isLoaded) {
             getSpots();
         }
 
     }, [isLoaded])
-
 
     const goToSpotDetail = (e, spot) => {
         e.preventDefault();
@@ -40,6 +35,8 @@ const LandingPage = () => {
     if (!isLoaded) {
         return <h1>Loading...</h1>
     } else {
+        
+    
         return (
             <div>
                 <h1>Welcome to Fortbnb</h1>

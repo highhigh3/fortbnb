@@ -105,7 +105,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', requireAuth, validateSpot, async (req, res, next) => {
   try {
     const { address, city, state, country, lat, lng, name, description, price } = req.body
-    console.log(address, city, state, country, lat, lng, name, description, price)
+    // console.log(address, city, state, country, lat, lng, name, description, price)
 
     const newSpot = await Spot.create({
       ownerId: req.user.id,
@@ -133,17 +133,44 @@ router.get('/', async (req, res, next) => {
 
 
 // Get Spot by id
+// router.get('/:id', async (req, res, next) => {
+//   try {
+//     const spot = await Spot.findByPk(req.params.id,
+//       {
+//         include: [
+//           {
+//             model: User,
+//             as: 'Owner',
+//             attributes: ['id', 'firstName', 'lastName']
+//           }
+//         ]
+//       });
+
+//     if (!spot) {
+//       const err = new Error("Spot couldn't be found");
+//       err.status = 404;
+//       return next(err);
+//     }
+
+//     return res.json(spot);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// Get Spot by id
 router.get('/:id', async (req, res, next) => {
   try {
     const spot = await Spot.findByPk(req.params.id,
       {
-        include: [
-          {
-            model: User,
-            as: 'Owner',
-            attributes: ['id', 'firstName', 'lastName']
-          }
-        ]
+        include: [{
+          model: SpotImage,
+          attributes: ['spotId', 'url', 'preview']
+        }, {
+          model: User,
+          as: "Owner",
+          attributes: ['id', 'firstName', 'lastName']
+        }]
       });
 
     if (!spot) {

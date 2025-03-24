@@ -1,0 +1,22 @@
+  .airbnb-logo {
+    height: 70px;
+    display: block;
+  }
+  
+  .nav-container {
+    list-style: none;
+    height: 80px;
+    padding: 0px 40px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px #dddddd solid;
+  }
+  
+  .create-spot-link {
+    font-weight: bold;
+  }
+
+  /* .nav-right-buttons {
+    background-color: blue;
+
+  } */

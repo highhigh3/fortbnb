@@ -55,15 +55,18 @@ export const spotDetailsThunk = (spotId) => async (dispatch) => {
             throw res;
         }
     } catch (error) {
-        return error;
+        return error;   
     }
 };
 
-export const createSpotThunk = () => async (dispatch) => {
+export const createSpotThunk = (spotData) => async (dispatch) => {
     try {
-        // console.log("TESTING THUNK ----->")
+        // console.log("HELLO CHECKING SPOTDATA", spotData)
+        const {country, address, city, state, lat, lng, description, name, price} = spotData;
+        // console.log(latitude, longitude, "CREATSPOT TESTING THUNK ----->")
         const res = await csrfFetch("/api/spots/", {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 country,
                 address,
@@ -73,14 +76,16 @@ export const createSpotThunk = () => async (dispatch) => {
                 lng,
                 description,
                 name,
-                price,
-                previewImage
+                price    
             })
         });
+        // console.log(res, "BOOM BOOM --->")
         if (res.ok) {
             const data = await res.json();
+            // console.log(data, "HELLLOOOOOOOO ------>")
             dispatch(createSpotAction(data));
-            throw res;
+            return data;
+            // throw res;
         }
     } catch (error) {
         return error;
@@ -98,7 +103,7 @@ const initialState = {
 const spotsReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
-        case GET_ALL_SPOTS:
+        case GET_ALL_SPOTS: {
             const spotsArr = action.payload.Spots;
             newState = { ...state }
             newState.allSpots = spotsArr;
@@ -108,8 +113,9 @@ const spotsReducer = (state = initialState, action) => {
             }
             newState.byId = newByIdGetAllSpots;
             return newState;
+        }
 
-        case SPOT_DETAILS:
+        case SPOT_DETAILS: {
             const spotDetails = action.payload;
             // console.log(spotDetails, "here --->") above not an array
             newState = { ...state };
@@ -121,12 +127,17 @@ const spotsReducer = (state = initialState, action) => {
             newState.byId = newByIdSpotDetails;
             // console.log(newState.byId, "reducerhere ----> xD")
             return newState;
+        }
 
-        // case CREATE_SPOT:
-        //     console.log("REDUCER FOR CREATE ------>")
-        //     const createSpot = action.payload;
-        //     newState = {...state}
-            
+        case CREATE_SPOT: {
+            // console.log(action.payload, "HI BYE HI BYE ---->")
+            const createSpot = action.payload;
+            newState= { ...state };
+            newState.allSpots = [...newState.allSpots, createSpot];
+            newState.byId = { ...newState.byId, [createSpot.id]: createSpot };
+            // console.log(newState, "HIIIII NEW STATE --->")
+            return newState;
+        }
 
 
         default:

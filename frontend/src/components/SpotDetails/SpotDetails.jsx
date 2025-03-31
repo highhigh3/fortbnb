@@ -12,20 +12,20 @@ const SpotDetails = () => {
 
     const spot = useSelector((state) => state.spots.byId[id]);
     // console.log(spot, "looking for imageurl ---->")
-    const [isLoaded, setisLoaded] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
 
         const getSpotDetails = async () => {
             await dispatch(spotDetailsThunk(id));
-            setisLoaded(true);
+            setIsLoaded(true);
         }
 
         if (!isLoaded) {
             getSpotDetails();
         }
 
-    }, [isLoaded])
+    }, [isLoaded, dispatch, id]) //eslint error need to add dispatch and id
 
     if (!isLoaded) {
         return <h1>LOADING...</h1>;
@@ -40,33 +40,36 @@ const SpotDetails = () => {
         <div>
             <h1>{spot.name}</h1>
             <ul>
-                <h2>{spot.city}, {spot.state}</h2>
+                <h2>{spot.city}, {spot.state}, {spot.country}</h2>
                 <div>
+                    <div className="images">
                     <li>
                         <img
                             className='mainImage'
                             src={spot.SpotImages[0].url}
                         />
                     </li>
-                    <div classname='spot-images'>
+                    <div className='spot-images'>
                         <img
-                            className='spotImage'
+                            className='spotimage-top-left'
                             src={spot.SpotImages[1].url}
                         />
                         <img
-                            className='spotImage'
+                            className='spotimage-top-right'
                             src={spot.SpotImages[2].url}
                         />
                         <img
-                            className='spotImage'
+                            className='spotimage-bottom-left'
                             src={spot.SpotImages[3].url}
                         />
                         <img
-                            className='spotImage'
+                            className='spotimage-bottom-right'
                             src={spot.SpotImages[4].url}
                         />
+                        </div>
                     </div>
                 </div>
+                <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
                 <p>{spot.description}</p>
                 <div>
                     <h3>{spot.price} / night</h3>

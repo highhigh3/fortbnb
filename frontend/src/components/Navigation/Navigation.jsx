@@ -34,6 +34,6 @@ function Navigation({ isLoaded }) {
       </div>
     </ul>
   );
-};
+}
 
 export default Navigation;

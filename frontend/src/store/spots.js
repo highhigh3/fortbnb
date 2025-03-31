@@ -50,7 +50,7 @@ export const spotDetailsThunk = (spotId) => async (dispatch) => {
         const res = await csrfFetch(`/api/spots/${spotId}`);
         if (res.ok) {
             const data = await res.json();
-            // console.log(data, "spotDetails Thunk ---->")
+            // console.log(data, "spotDetails Thunk ----->")
             dispatch(spotDetailsAction(data));
             throw res;
         }

@@ -102,22 +102,115 @@ router.get('/', async (req, res, next) => {
 
 
 //Create a Spot
+// router.post('/', requireAuth, validateSpot, async (req, res, next) => {
+//   try {
+//     const { address, city, state, country, lat, lng, name, description, price } = req.body
+//     // console.log(req.body, "REQ BODY----->")
+
+//     const newSpot = await Spot.create({
+//       ownerId: req.user.id,
+//       address, city, state, country, lat, lng, name, description, price
+//     });
+//     // console.log(newSpot, "NEWSPOT----->") //add a spot image condition
+
+//     res.status(201);
+//     return res.json(newSpot);
+
+//   } catch (e) {
+//     next(e);
+//   }
+// });
+
+//Create a Spot
 router.post('/', requireAuth, validateSpot, async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body
+    const { address, city, state, country, lat, lng, name, description, price, previewImage, image1, image2, image3, image4 } = req.body;
 
     const newSpot = await Spot.create({
       ownerId: req.user.id,
       address, city, state, country, lat, lng, name, description, price
     });
 
-    res.status(201);
-    return res.json(newSpot);
+    // console.log(newSpot, "NEWSPOT----->") //add a spot image condition
+    let images = [];
+
+    if (previewImage) {
+      images.push({ url: previewImage });
+    }
+    
+    if (image1) {
+      images.push({ url: image1 });
+    }
+    
+    if (image2) {
+      images.push({ url: image2 });
+    }
+    
+    if (image3) {
+      images.push({ url: image3 });
+    }
+    
+    if (image4) {
+      images.push({ url: image4 });
+    }
+
+    for (const image of images) {
+      await SpotImage.create({
+        spotId: newSpot.id,
+        url: image.url
+      });
+    }
+
+    res.status(201).json(newSpot);
 
   } catch (e) {
     next(e);
   }
 });
+
+
+
+// router.post('/', requireAuth, validateSpot, async (req, res, next) => {
+//   try {
+//     const { address, city, state, country, lat, lng, name, description, price, previewImage } = req.body;
+
+//     // Create a new spot
+//     const newSpot = await Spot.create({
+//       ownerId: req.user.id,
+//       address,
+//       city,
+//       state,
+//       country,
+//       lat,
+//       lng,
+//       name,
+//       description,
+//       price
+//     });
+
+//     // If a previewImage URL is provided, associate it with the spot
+//     if (previewImage) {
+//       // Assuming you have a SpotImage model that links images to spots
+//       await SpotImage.create({
+//         spotId: newSpot.id,
+//         url: previewImage
+//       });
+//     }
+
+//     // Fetch the spot and include its images (if any)
+//     const fullSpot = await Spot.findByPk(newSpot.id, {
+//       include: {
+//         model: SpotImage,
+//         attributes: ['url']  // Make sure to return the image URL(s)
+//       }
+//     });
+
+//     res.status(201).json(fullSpot); // Return the created spot with images
+//   } catch (e) {
+//     next(e);
+//   }
+// });
+
 
 
 // Get All spots --- dont worry about queries and pagination
@@ -130,32 +223,6 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-
-// Get Spot by id
-// router.get('/:id', async (req, res, next) => {
-//   try {
-//     const spot = await Spot.findByPk(req.params.id,
-//       {
-//         include: [
-//           {
-//             model: User,
-//             as: 'Owner',
-//             attributes: ['id', 'firstName', 'lastName']
-//           }
-//         ]
-//       });
-
-//     if (!spot) {
-//       const err = new Error("Spot couldn't be found");
-//       err.status = 404;
-//       return next(err);
-//     }
-
-//     return res.json(spot);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 // Get Spot by id
 router.get('/:id', async (req, res, next) => {

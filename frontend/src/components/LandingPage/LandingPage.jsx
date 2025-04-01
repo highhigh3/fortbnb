@@ -25,7 +25,7 @@ const LandingPage = () => {
             getSpots();
         }
 
-    }, [isLoaded])
+    }, [dispatch, isLoaded])
 
     const goToSpotDetail = (e, spot) => {
         e.preventDefault();

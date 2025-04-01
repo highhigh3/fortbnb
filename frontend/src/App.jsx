@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <SpotDetails />,
       },
       {
-        path: '/create-spot',
+        path: '/spot/create-spot',
         element: <CreateSpot />,
       },
     ]

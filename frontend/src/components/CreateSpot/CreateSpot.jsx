@@ -6,11 +6,8 @@ import "./CreateSpot.css"
 import { createSpotThunk } from '../../store/spots';
 
 const CreateSpot = () => {
-    // const [isLoaded, setisLoaded] = useState(false);
+    
     const dispatch = useDispatch();
-
-
-
     const navigate = useNavigate();
 
     const [country, setCountry] = useState("");
@@ -28,19 +25,6 @@ const CreateSpot = () => {
     const [image3, setImage3] = useState("");
     const [image4, setImage4] = useState("");
 
-    // useEffect(() => {
-
-    //     const postCreateSpot = async() => {
-    //         await dispatch(createSpotThunk());
-    //         setisLoaded(true);
-    //     };
-
-    //     postCreateSpot();
-    // }, [dispatch]);
-
-    // if (!isLoaded) {
-    //     return <h1>Loading Create a Spot...</h1>
-    // }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,19 +39,18 @@ const CreateSpot = () => {
             lng,
             description,
             name,
-            price
-            // previewImage,
-            // image1,
-            // image2,
-            // image3,
-            // image4
+            price,
+            previewImage,
+            image1,
+            image2,
+            image3,
+            image4
         };
 
         const createdNewSpot = await dispatch(createSpotThunk(spotData));
-        navigate(`/spots/${createdNewSpot.id}`)
+        navigate(`/spot/${createdNewSpot.id}`)
 
-    };
-
+    }
 
     return (
         <div>
@@ -180,7 +163,7 @@ const CreateSpot = () => {
                 <p>Submit a link to at lease one photo to publish your spot.</p>
                 <input 
                     type="text"
-                    // required
+                    required
                     value={previewImage}
                     placeholder="Preview Image URL" 
                     onChange={(e) => setPreviewImage(e.target.value)}    
@@ -189,7 +172,7 @@ const CreateSpot = () => {
             <div>
                 <input 
                     type="text"
-                    // required
+                    required
                     value={image1}
                     placeholder="Image URL" 
                     onChange={(e) => setImage1(e.target.value)}    
@@ -198,7 +181,7 @@ const CreateSpot = () => {
             <div>
                 <input 
                     type="text"
-                    // required
+                    required
                     value={image2}
                     placeholder="Image URL" 
                     onChange={(e) => setImage2(e.target.value)}    
@@ -207,7 +190,7 @@ const CreateSpot = () => {
             <div>
                 <input 
                     type="text"
-                    // required
+                    required
                     value={image3}
                     placeholder="Image URL" 
                     onChange={(e) => setImage3(e.target.value)}    
@@ -216,7 +199,7 @@ const CreateSpot = () => {
             <div>
                 <input 
                     type="text"
-                    // required
+                    required
                     value={image4}
                     placeholder="Image URL" 
                     onChange={(e) => setImage4(e.target.value)}    

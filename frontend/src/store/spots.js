@@ -62,7 +62,7 @@ export const spotDetailsThunk = (spotId) => async (dispatch) => {
 export const createSpotThunk = (spotData) => async (dispatch) => {
     try {
         // console.log("HELLO CHECKING SPOTDATA", spotData)
-        const {country, address, city, state, lat, lng, description, name, price} = spotData;
+        const {country, address, city, state, lat, lng, description, name, price, previewImage, image1, image2, image3, image4 } = spotData;
         // console.log(latitude, longitude, "CREATSPOT TESTING THUNK ----->")
         const res = await csrfFetch("/api/spots/", {
             method: "POST",
@@ -76,7 +76,12 @@ export const createSpotThunk = (spotData) => async (dispatch) => {
                 lng,
                 description,
                 name,
-                price    
+                price,
+                previewImage,
+                image1,
+                image2,
+                image3,
+                image4
             })
         });
         // console.log(res, "BOOM BOOM --->")
@@ -133,10 +138,14 @@ const spotsReducer = (state = initialState, action) => {
             // console.log(action.payload, "HI BYE HI BYE ---->")
             const createSpot = action.payload;
             newState= { ...state };
+            // console.log(newState, "NEWSTATE ARE YOU THERE ----->")
             newState.allSpots = [...newState.allSpots, createSpot];
+            // console.log(newState.allSpots, "IS IT BEING STORED IN MY ALL SPOTS---->")
             newState.byId = { ...newState.byId, [createSpot.id]: createSpot };
+            // console.log([createSpot.id], "check this ---->")
             // console.log(newState, "HIIIII NEW STATE --->")
-            return newState;
+            // console.log(createSpot, "LOL SMILEY FACE ----->")
+            return newState; 
         }
 
 

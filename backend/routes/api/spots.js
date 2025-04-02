@@ -63,17 +63,20 @@ router.get('/', async (req, res, next) => {
         }
       ]
     });
-
+    // console.log(spots, "spots ------>")
     const prettySpots = [];
-
+      console.log(spots,"spotObj")
     for (let spot of spots) {
+
       const spotObj = await spot.toJSON();
-      console.log(spotObj)
+      
+      // console.log(spotObj)
       // gett the average of all the reviews per spot
       let sum = 0;
       for (let i = 0; i < spotObj.Reviews.length; i++) {
+
         let review = spotObj.Reviews[i];
-        console.log(review);
+        // console.log(review);
         sum += review.stars;
       }
       const avgRating = sum / spotObj.Reviews.length;
@@ -81,6 +84,7 @@ router.get('/', async (req, res, next) => {
 
       // Get the previewImage
       let previewImageUrl = null;
+
       for (let previewImage of spotObj.SpotImages) {
         if (previewImage.preview === true) {
           previewImageUrl = previewImage.url;
@@ -90,10 +94,11 @@ router.get('/', async (req, res, next) => {
       spotObj.previewImage = previewImageUrl;
       delete spotObj.SpotImages;
       delete spotObj.Reviews
+
       prettySpots.push(spotObj)
 
     }
-
+  // console.log(prettySpots, "ppprrrrr ----- >")
     return res.json({ Spots: prettySpots });
   } catch (e) {
     next(e);
@@ -135,7 +140,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
     let images = [];
 
     if (previewImage) {
-      images.push({ url: previewImage });
+      images.push({ url: previewImage, preview: true });
     }
     
     if (image1) {
@@ -153,11 +158,13 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
     if (image4) {
       images.push({ url: image4 });
     }
+    //bulkcreate
 
     for (const image of images) {
       await SpotImage.create({
         spotId: newSpot.id,
-        url: image.url
+        url: image.url,
+        preview: image.preview
       });
     }
 
